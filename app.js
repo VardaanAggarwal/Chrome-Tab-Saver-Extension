@@ -10,7 +10,8 @@ inputBtn.addEventListener("click", function(){
 function renderLeads(){
     let listItems = ""
     for(let count = 0; count < myLeads.length; count++){
-        listItems += "<li>" + myLeads[count] + "</li>"
+        listItems += `<li><a href="${myLeads[count]}" target="_blank">${myLeads[count]}</a></li>`
     }
     ulEl.innerHTML = listItems
+    inputEl.value = ''
 }
