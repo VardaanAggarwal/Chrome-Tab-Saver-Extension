@@ -12,20 +12,28 @@ body{
     border: 2px solid #5f9341;
     margin-bottom: 20px;
 }
-.input-btn{
+button{
     background-color: #5f9341;
-    border: none;
-    font-size: 25px;
+    border: 2px solid #5f9341;
+    font-size: 15px;
     padding: 10px 20px;
     color: white;
     font-weight: bold;
 }
+.delete-btn{
+    color: #5f9341;
+    background-color: white;
+}
+/* button:hover{
+    font-size: 23px;
+    background-color: aquamarine;
+} */
 ul{
     list-style: none;
     
 }
 li, a{
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 500;
     color: rgb(3, 196, 80);
     margin-top: 5px;
