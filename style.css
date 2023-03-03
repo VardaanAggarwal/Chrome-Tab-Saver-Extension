@@ -28,14 +28,14 @@ button{
     font-size: 23px;
     background-color: aquamarine;
 } */
-ul{
-    list-style: none;
-    
-}
+/* ul{
+    list-style: none; 
+} */
 li, a{
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 400;
     color: rgb(3, 196, 80);
     margin-top: 5px;
-    margin-left: -18px;
+    /* margin-left: -18px; */
+    margin-bottom: 5px;
 }
