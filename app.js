@@ -28,6 +28,10 @@ deleteBtn.addEventListener("dblclick", function () {
 });
 
 inputBtn.addEventListener("click", function () {
+  if (!inputEl.value) {
+    alert("Please enter a valid URL");
+    return;
+  }
   myLeads.push(inputEl.value);
   localStorage.setItem("myLeads", JSON.stringify(myLeads));
   render(myLeads);
@@ -37,7 +41,11 @@ function render(Leads) {
   let listItems = "";
   for (let count = 0; count < Leads.length; count++) {
     const lead = Leads[count];
-    listItems += `<li>[${lead.title}](${lead.url})</li>`;
+    if (typeof lead === "object") {
+      listItems += `<li>[${lead.title}](${lead.url})</li>`;
+    } else {
+      listItems += `<li>${lead}</li>`;
+    }
   }
   ulEl.innerHTML = listItems;
   inputEl.value = "";
