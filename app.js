@@ -14,7 +14,7 @@ if (leadsfromlocalStorage) {
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
     for (const tab of tabs) {
-      myLeads.push(tab.url);
+      myLeads.push({ url: tab.url, title: tab.title });
     }
     localStorage.setItem("myLeads", JSON.stringify(myLeads));
     render(myLeads);
@@ -36,7 +36,8 @@ inputBtn.addEventListener("click", function () {
 function render(Leads) {
   let listItems = "";
   for (let count = 0; count < Leads.length; count++) {
-    listItems += `<li><a href="${Leads[count]}" target="_blank">${Leads[count]}</a></li>`;
+    const lead = Leads[count];
+    listItems += `<li>[${lead.title}](${lead.url})</li>`;
   }
   ulEl.innerHTML = listItems;
   inputEl.value = "";
