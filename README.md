@@ -1,4 +1,4 @@
-# Lead-Tracker-Chrome-Extension
+# Chrome-Tab-Saver-Extension
 
 
 ## Introduction
