@@ -7,16 +7,16 @@ const tabBtn = document.getElementById("tab-btn");
 const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
 if (leadsfromlocalStorage) {
-  myLeads = leadsfromlocalStorage;
-  render(myLeads);
+  render(true);
 }
 
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
+    const leads = JSON.parse(localStorage.getItem("myLeads")) ?? [];
     for (const tab of tabs) {
-      myLeads.push({ url: tab.url, title: tab.title });
+      leads.push({ url: tab.url, title: tab.title });
     }
-    localStorage.setItem("myLeads", JSON.stringify(myLeads));
+    localStorage.setItem("myLeads", JSON.stringify(leads));
     render();
   });
 });
@@ -31,21 +31,33 @@ inputBtn.addEventListener("click", function () {
     alert("Please enter a valid URL");
     return;
   }
-  myLeads.push(inputEl.value);
-  localStorage.setItem("myLeads", JSON.stringify(myLeads));
+  const leads = JSON.parse(localStorage.getItem("myLeads")) ?? [];
+  leads.push(inputEl.value);
+  localStorage.setItem("myLeads", JSON.stringify(leads));
   render();
 });
 
-function render() {
+function render(renderAsLinks = false) {
   const leads = JSON.parse(localStorage.getItem("myLeads"));
+
   let listItems = "";
+
+  if (!leads) {
+    ulEl.innerHTML = listItems;
+    inputEl.value = "";
+    return;
+  }
+
   for (const lead of leads) {
     if (typeof lead === "object") {
-      listItems += `<li>[${lead.title}](${lead.url})</li>`;
+      listItems += renderAsLinks
+        ? `<li><a href="${lead.url}" target="_blank">${lead.title}</a></li>`
+        : `<li>[${lead.title}](${lead.url})</li>`;
     } else {
       listItems += `<li>${lead}</li>`;
     }
   }
+
   ulEl.innerHTML = listItems;
   inputEl.value = "";
 }
