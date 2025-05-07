@@ -13,8 +13,8 @@ if (leadsfromlocalStorage) {
 
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
-    for (const tab of tabs){
-      myLeads.push(tab.url);  
+    for (const tab of tabs) {
+      myLeads.push(tab.url);
     }
     localStorage.setItem("myLeads", JSON.stringify(myLeads));
     render(myLeads);
