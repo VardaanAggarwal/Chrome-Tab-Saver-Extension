@@ -1,5 +1,4 @@
 let myLeads = [];
-const inputEl = document.getElementById("input-el");
 const inputBtn = document.getElementById("input-btn");
 const ulEl = document.getElementById("ul-el");
 const deleteBtn = document.getElementById("delete-btn");
@@ -7,7 +6,7 @@ const tabBtn = document.getElementById("tab-btn");
 const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
 if (leadsfromlocalStorage) {
-  render(true);
+  render();
 }
 
 tabBtn.addEventListener("click", function () {
@@ -26,25 +25,27 @@ deleteBtn.addEventListener("dblclick", function () {
   render();
 });
 
-inputBtn.addEventListener("click", function () {
-  if (!inputEl.value) {
-    alert("Please enter a valid URL");
-    return;
-  }
+inputBtn.addEventListener("click", async function () {
   const leads = JSON.parse(localStorage.getItem("myLeads")) ?? [];
-  leads.push(inputEl.value);
-  localStorage.setItem("myLeads", JSON.stringify(leads));
-  render();
+  let listItems = "";
+  for (const idx in leads) {
+    const lead = leads[idx];
+    if (typeof lead === "object") {
+      listItems += `${idx + 1}. [${lead.title}](${lead.url})\n`;
+    } else {
+      listItems += `${idx + 1}. ${lead}\n`;
+    }
+  }
+  await setClipboard(listItems);
 });
 
-function render(renderAsLinks = false) {
+function render(renderAsLinks = true) {
   const leads = JSON.parse(localStorage.getItem("myLeads"));
 
   let listItems = "";
 
   if (!leads) {
     ulEl.innerHTML = listItems;
-    inputEl.value = "";
     return;
   }
 
@@ -59,5 +60,17 @@ function render(renderAsLinks = false) {
   }
 
   ulEl.innerHTML = listItems;
-  inputEl.value = "";
+}
+
+async function setClipboardUsingItems(text) {
+  const type = "text/plain";
+  const clipboardItemData = {
+    [type]: text,
+  };
+  const clipboardItem = new ClipboardItem(clipboardItemData);
+  await navigator.clipboard.write([clipboardItem]);
+}
+
+async function setClipboard(text) {
+  await navigator.clipboard.writeText(text);
 }
