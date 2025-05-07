@@ -17,14 +17,13 @@ tabBtn.addEventListener("click", function () {
       myLeads.push({ url: tab.url, title: tab.title });
     }
     localStorage.setItem("myLeads", JSON.stringify(myLeads));
-    render(myLeads);
+    render();
   });
 });
 
 deleteBtn.addEventListener("dblclick", function () {
   localStorage.clear();
-  myLeads = [];
-  render(myLeads);
+  render();
 });
 
 inputBtn.addEventListener("click", function () {
@@ -34,13 +33,13 @@ inputBtn.addEventListener("click", function () {
   }
   myLeads.push(inputEl.value);
   localStorage.setItem("myLeads", JSON.stringify(myLeads));
-  render(myLeads);
+  render();
 });
 
-function render(Leads) {
+function render() {
+  const leads = JSON.parse(localStorage.getItem("myLeads"));
   let listItems = "";
-  for (let count = 0; count < Leads.length; count++) {
-    const lead = Leads[count];
+  for (const lead of leads) {
     if (typeof lead === "object") {
       listItems += `<li>[${lead.title}](${lead.url})</li>`;
     } else {
