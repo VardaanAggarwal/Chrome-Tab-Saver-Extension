@@ -24,6 +24,12 @@ deleteBtn.addEventListener("dblclick", function () {
   render();
 });
 
+createBtn.addEventListener("dblclick", async function () {
+  for (const tab of leadsfromlocalStorage){
+    chrome.tabs.create({url: tab.url})
+  }
+});
+
 inputBtn.addEventListener("click", async function () {
   const leads = JSON.parse(localStorage.getItem("myLeads")) ?? [];
   let listItems = "";
