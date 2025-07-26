@@ -10,9 +10,12 @@ if (leadsfromlocalStorage) {
 
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
-    const leads = [];
+    const leads = JSON.parse(localStorage.getItem("myLeads"));
     for (const tab of tabs) {
-      leads.push({ url: tab.url, title: tab.title });
+      const alreadyExists = leads.find((lead) => lead.url == tab.url);
+      if (!alreadyExists) {
+        leads.push({ url: tab.url, title: tab.title });
+      }
     }
     localStorage.setItem("myLeads", JSON.stringify(leads));
     render();
@@ -20,15 +23,15 @@ tabBtn.addEventListener("click", function () {
 });
 
 deleteBtn.addEventListener("dblclick", function () {
-  localStorage.clear();
+  localStorage.setItem("myLeads", JSON.stringify([]));
   render();
 });
 
-createBtn.addEventListener("dblclick", async function () {
-  for (const tab of leadsfromlocalStorage){
-    chrome.tabs.create({url: tab.url})
-  }
-});
+// createBtn.addEventListener("dblclick", async function () {
+//   for (const tab of leadsfromlocalStorage) {
+//     chrome.tabs.create({ url: tab.url });
+//   }
+// });
 
 inputBtn.addEventListener("click", async function () {
   const leads = JSON.parse(localStorage.getItem("myLeads")) ?? [];
