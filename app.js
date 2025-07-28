@@ -40,9 +40,9 @@ inputBtn.addEventListener("click", async function () {
   for (const idx in leads) {
     const lead = leads[idx];
     if (typeof lead === "object") {
-      listItems += `${idx + 1}. [${lead.title}](${lead.url})\n`;
+      listItems += `${Number(idx) + 1}. [${lead.title}](${lead.url})\n`;
     } else {
-      listItems += `${idx + 1}. ${lead}\n`;
+      listItems += `${Number(idx) + 1}. ${lead}\n`;
     }
   }
   await setClipboard(listItems);
@@ -53,7 +53,6 @@ searchBar.addEventListener("keyup", function () {
   const filtered = leadsfromlocalStorage.filter((lead) =>
     lead.title.toLowerCase().includes(term)
   );
-  console.log(filtered);
   render(filtered);
 });
 
@@ -64,7 +63,9 @@ function render(data) {
 
   ulEl.innerHTML = "";
 
-  for (const lead of data) {
+  for (const i in data) {
+    const lead = data[i];
+
     const li = document.createElement("li");
 
     const favicon = document.createElement("img");
@@ -81,8 +82,18 @@ function render(data) {
     anchor.onclick = () => {
       chrome.tabs.create({ url: lead.url, active: false });
     };
-    anchor.textContent = lead.title;
+    anchor.textContent = `${Number(i) + 1}. ${lead.title}`;
 
+    favicon.onclick = () => {
+      let data = JSON.parse(localStorage.getItem("myLeads"));
+
+      data = data.filter((wow) => wow.url !== lead.url);
+
+      localStorage.setItem("myLeads", JSON.stringify(data));
+
+      render();
+    };
+    
     div.appendChild(anchor);
 
     li.appendChild(favicon);
