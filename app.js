@@ -2,10 +2,9 @@ const inputBtn = document.getElementById("input-btn");
 const ulEl = document.getElementById("ul-el");
 const deleteBtn = document.getElementById("delete-btn");
 const tabBtn = document.getElementById("tab-btn");
-const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 const searchBar = document.getElementById("searchInput");
 
-if (leadsfromlocalStorage) {
+if (JSON.parse(localStorage.getItem("myLeads"))) {
   render();
 }
 
@@ -55,6 +54,7 @@ inputBtn.addEventListener("click", async function () {
 
 searchBar.addEventListener("keyup", function () {
   const term = this.value.toLowerCase();
+  const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
   const filtered = leadsfromlocalStorage.filter((lead) =>
     lead.title.toLowerCase().includes(term)
   );
