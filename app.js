@@ -14,7 +14,12 @@ tabBtn.addEventListener("click", function () {
     const leads = JSON.parse(localStorage.getItem("myLeads"));
     for (const tab of tabs) {
       const alreadyExists = leads.find((lead) => lead.url == tab.url);
-      if (!alreadyExists) {
+      if (
+        !alreadyExists &&
+        !["chrome://newtab/", "https://www.youtube.com/"].includes(tab.url) &&
+        !tab.url.includes("music") &&
+        !tab.url.includes("instagram")
+      ) {
         leads.push({ url: tab.url, title: tab.title });
       }
     }
@@ -93,7 +98,7 @@ function render(data) {
 
       render();
     };
-    
+
     div.appendChild(anchor);
 
     li.appendChild(favicon);
