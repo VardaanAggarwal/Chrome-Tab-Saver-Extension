@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <button id="input-btn" class="input-btn">Save Input</button>
-    <button id="tab-btn" class="tab-btn">Save Tab</button>
-    <button id="delete-btn" class="delete-btn">Delete All</button>
-    <ol id="ul-el"></ol>
+    <div class="container">
+      <h1>Tab Saver</h1>
+      <input type="text" id="searchInput" placeholder="Search tabs..." />
+      <div class="button-group">
+        <button id="input-btn" class="action-btn">Save Input</button>
+        <button id="tab-btn" class="action-btn">Save Tab</button>
+        <button id="delete-btn" class="delete-btn">Clear All</button>
+      </div>
+      <ol id="ul-el" class="link-list"></ol>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>
