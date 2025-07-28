@@ -3,6 +3,7 @@ const ulEl = document.getElementById("ul-el");
 const deleteBtn = document.getElementById("delete-btn");
 const tabBtn = document.getElementById("tab-btn");
 const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
+const searchBar = document.getElementById("searchInput");
 
 if (leadsfromlocalStorage) {
   render();
@@ -47,27 +48,48 @@ inputBtn.addEventListener("click", async function () {
   await setClipboard(listItems);
 });
 
-function render(renderAsLinks = true) {
-  const leads = JSON.parse(localStorage.getItem("myLeads"));
+searchBar.addEventListener("keyup", function () {
+  const term = this.value.toLowerCase();
+  const filtered = leadsfromlocalStorage.filter((lead) =>
+    lead.title.toLowerCase().includes(term)
+  );
+  console.log(filtered);
+  render(filtered);
+});
 
-  let listItems = "";
-
-  if (!leads) {
-    ulEl.innerHTML = listItems;
-    return;
+function render(data) {
+  if (!data) {
+    data = JSON.parse(localStorage.getItem("myLeads"));
   }
 
-  for (const lead of leads) {
-    if (typeof lead === "object") {
-      listItems += renderAsLinks
-        ? `<li><a href="${lead.url}" target="_blank">${lead.title}</a></li>`
-        : `<li>[${lead.title}](${lead.url})</li>`;
-    } else {
-      listItems += `<li>${lead}</li>`;
-    }
-  }
+  ulEl.innerHTML = "";
 
-  ulEl.innerHTML = listItems;
+  for (const lead of data) {
+    const li = document.createElement("li");
+
+    const favicon = document.createElement("img");
+    favicon.src = `https://www.google.com/s2/favicons?domain=${
+      new URL(lead.url).hostname
+    }`;
+    favicon.className = "link-icon";
+
+    const div = document.createElement("div");
+    div.className = "link-info";
+
+    const anchor = document.createElement("button");
+    anchor.className = "link-button";
+    anchor.onclick = () => {
+      chrome.tabs.create({ url: lead.url, active: false });
+    };
+    anchor.textContent = lead.title;
+
+    div.appendChild(anchor);
+
+    li.appendChild(favicon);
+    li.appendChild(div);
+
+    ulEl.appendChild(li);
+  }
 }
 
 async function setClipboardUsingItems(text) {
