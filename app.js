@@ -55,8 +55,10 @@ inputBtn.addEventListener("click", async function () {
 searchBar.addEventListener("keyup", function () {
   const term = this.value.toLowerCase();
   const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
-  const filtered = leadsfromlocalStorage.filter((lead) =>
-    lead.title.toLowerCase().includes(term)
+  const filtered = leadsfromlocalStorage.filter(
+    (lead) =>
+      lead.title.toLowerCase().includes(term) ||
+      lead.url.toLowerCase().includes(term)
   );
   render(filtered);
 });
