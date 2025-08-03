@@ -68,10 +68,12 @@ function render(data) {
     data = JSON.parse(localStorage.getItem("myLeads"));
   }
 
+  const reversedData = [...data].reverse();
+
   ulEl.innerHTML = "";
 
-  for (const i in data) {
-    const lead = data[i];
+  for (const i in reversedData) {
+    const lead = reversedData[i];
 
     const li = document.createElement("li");
 
