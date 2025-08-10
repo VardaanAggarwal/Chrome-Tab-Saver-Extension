@@ -10,7 +10,7 @@ if (JSON.parse(localStorage.getItem("myLeads"))) {
 
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
-    const leads = JSON.parse(localStorage.getItem("myLeads"));
+    const leads = JSON.parse(localStorage.getItem("myLeads")) || [];
     for (const tab of tabs) {
       const alreadyExists = leads.find((lead) => lead.url == tab.url);
       if (
