@@ -10,11 +10,11 @@ if (JSON.parse(localStorage.getItem("myLeads"))) {
 
 tabBtn.addEventListener("click", function () {
   chrome.tabs.query({}, function (tabs) {
-    const leads = JSON.parse(localStorage.getItem("myLeads")) || [];
+    let leads = JSON.parse(localStorage.getItem("myLeads")) || [];
+
     for (const tab of tabs) {
-      const alreadyExists = leads.find((lead) => lead.url == tab.url);
+      leads = leads.filter(lead => lead.url !== tab.url)
       if (
-        !alreadyExists &&
         !["chrome://newtab/", "https://www.youtube.com/"].includes(tab.url) &&
         !tab.url.includes("music") &&
         !tab.url.includes("instagram")
