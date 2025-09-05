@@ -13,7 +13,12 @@ tabBtn.addEventListener("click", function () {
     let leads = JSON.parse(localStorage.getItem("myLeads")) || [];
 
     for (const tab of tabs) {
-      leads = leads.filter(lead => lead.url !== tab.url)
+      if (tab.url.includes("www.google.com/search?q")) {
+        continue;
+      }
+
+      leads = leads.filter((lead) => lead.url !== tab.url);
+
       if (
         !["chrome://newtab/", "https://www.youtube.com/"].includes(tab.url) &&
         !tab.url.includes("music") &&
@@ -27,9 +32,11 @@ tabBtn.addEventListener("click", function () {
   });
 });
 
-deleteBtn.addEventListener("dblclick", function () {
-  localStorage.setItem("myLeads", JSON.stringify([]));
-  render();
+deleteBtn.addEventListener("dblclick", async function () {
+  const leads = localStorage.getItem("myLeads") ?? "";
+  await setClipboard(leads);
+  // localStorage.setItem("myLeads", JSON.stringify([]));
+  // render();
 });
 
 // createBtn.addEventListener("dblclick", async function () {
@@ -53,20 +60,19 @@ inputBtn.addEventListener("click", async function () {
 });
 
 searchBar.addEventListener("keyup", function () {
-  const term = this.value.toLowerCase();
-  const leadsfromlocalStorage = JSON.parse(localStorage.getItem("myLeads"));
-  const filtered = leadsfromlocalStorage.filter(
-    (lead) =>
-      lead.title.toLowerCase().includes(term) ||
-      lead.url.toLowerCase().includes(term)
-  );
-  render(filtered);
+  render(this.value.toLowerCase());
 });
 
-function render(data) {
-  if (!data) {
-    data = JSON.parse(localStorage.getItem("myLeads"));
-  }
+function render(search) {
+  let data = JSON.parse(localStorage.getItem("myLeads"));
+
+  data = search
+    ? data.filter(
+        (lead) =>
+          lead.title.toLowerCase().includes(search) ||
+          lead.url.toLowerCase().includes(search)
+      )
+    : data;
 
   const reversedData = [...data].reverse();
 
@@ -100,7 +106,7 @@ function render(data) {
 
       localStorage.setItem("myLeads", JSON.stringify(data));
 
-      render();
+      render(search);
     };
 
     div.appendChild(anchor);
