@@ -64,6 +64,7 @@ searchBar.addEventListener("keyup", function () {
 });
 
 function render(search) {
+  searchBar.focus();
   let data = JSON.parse(localStorage.getItem("myLeads"));
 
   data = search
